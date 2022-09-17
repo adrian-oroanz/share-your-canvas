@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<?php
-session_start();
-include("includes/header.php");
-
-if(!isset($_SESSION['user_email'])){
-	header("location: index.php");
-}
-?>
+<?php include("includes/header.php"); ?>
 <html>
 <head>
 	<?php
@@ -19,21 +12,14 @@ if(!isset($_SESSION['user_email'])){
 	?>
 	<title><?php echo "$user_name"; ?></title>
 	<meta charset="utf-8">
- 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="style/home_style2.css">
+	<link rel="stylesheet" type="text/css" href="style/profile_style.css" />
 </head>
 <style>
-	#cover-img{
-		height: 400px;
-		width: 100%;
-	}#profile-img{
-		position: absolute;
-		top: 160px;
-		left: 40px;
-	}
 	#update_profile{
 		position: relative;
 		top: -33px;
@@ -54,52 +40,54 @@ if(!isset($_SESSION['user_email'])){
 		border: 5px solid #e6e6e6;
 		padding: 40px 50px;
 	}
-	post_img{
-		height: 30px;
-		width: 100%;
-
-	}
 </style>
 <body>
+<script>
+	/**
+	 * @param {number | string} postId
+	 */
+	function confirmDeletion(postId) {
+		const res = confirm("¿Estas seguro que deseas eliminar este post?\n¡Esta accion es permanente!");
+		
+		if (res)
+			window.open(`functions/delete_post.php?post_id=${postId}`, "_self");
+	}
+</script>
 <div class="row">
 	<div class="col-sm-2">	
 	</div>
 	<div class="col-sm-8">
-		<?php
-			echo"
-			<div>
-				<div><img id='cover-img' class='img-rounded' src='cover/$user_cover' alt='cover'></div>
-				<form action='profile.php?u_id=$user_id' method='post' enctype='multipart/form-data'>
+		<div>
+			<div><img id="cover-img" class="img-rounded" src="cover/<?php echo $user_cover; ?>" alt="cover"></div>
+			<form action="profile.php?u_id=<?php echo $user_id; ?>" method="post" enctype="multipart/form-data">
 
-				<ul class='nav pull-left' style='position:absolute;top:10px;left:40px;'>
-					<li class='dropdown'>
-						<button class='dropdown-toggle btn btn-default' data-toggle='dropdown'>Change Cover</button>
-						<div class='dropdown-menu'>
-							<center>
-							<p>Click <strong>Select Cover</strong> and then click the <br> <strong>Update Cover</strong></p>
-							<label class='btn btn-info'> Select Cover
-							<input type='file' name='u_cover' size='60' />
-							</label><br><br>
-							<button name='submit' class='btn btn-info'>Update Cover</button>
-							</center>
-						</div>
-					</li>
-				</ul>
+			<ul class="nav pull-left" style="position:absolute;top:10px;left:40px;">
+				<li class="dropdown">
+					<button class="dropdown-toggle btn btn-default" data-toggle="dropdown">Cambiar Portada</button>
+					<div class="dropdown-menu">
+						<center>
+						<p>Sube una imagen en <strong>Seleccionar Portada</strong> y después <strong>Actualizar Portada</strong></p>
+						<label class="btn btn-info"> Seleccionar Portada
+						<input type="file" name="u_cover" size="60" />
+						</label><br><br>
+						<button name="submit" class="btn btn-info">Actualizar Portada</button>
+						</center>
+					</div>
+				</li>
+			</ul>
 
-				</form>
-			</div>
-			<div id='profile-img'>
-				<img src='users/$user_image' alt='Profile' class='img-circle' width='180px' height='185px'>
-				<form action='profile.php?u_id='$user_id' method='post' enctype='multipart/form-data'>
+			</form>
+		</div>
+		<div id="profile-img">
+			<img src="users/<?php echo $user_image; ?>" alt="Profile" class="img-circle" width="180px" height="185px">
+			<form action="profile.php?u_id=<?php echo $user_id; ?>" method="post" enctype="multipart/form-data">
 
-				<label id='update_profile'> Select Profile
-				<input type='file' name='u_image' size='60' />
-				</label><br><br>
-				<button id='button_profile' name='update' class='btn btn-info'>Update Profile</button>
-				</form>
-			</div><br>
-			";
-		?>
+			<label id="update_profile"> Cambiar Foto
+			<input type="file" name="u_image" size="60" />
+			</label><br><br>
+			<button id="button_profile" name="update" class="btn btn-info">Actualizar Foto</button>
+			</form>
+		</div><br>
 		<?php
 
 			if(isset($_POST['submit'])){
@@ -164,13 +152,13 @@ if(!isset($_SESSION['user_email'])){
 	<div class="col-sm-2" style="background-color: #e6e6e6;text-align: center;left: 0.7%;border-radius: 5px;">
 		<?php
 		echo"
-			<center><h2><strong>About</strong></h2></center>
+			<center><h2><strong>Acerca De</strong></h2></center>
 			<center><h4><strong>$first_name $last_name</strong></h4></center>
 			<p><strong><i style='color:grey;'>$describe_user</i></strong></p><br>
-			<p><strong>Lives In: </strong> $user_country</p><br>
-			<p><strong>Member Since: </strong> $register_date</p><br>
-			<p><strong>Gender: </strong> $user_gender</p><br>
-			<p><strong>Date of Birth: </strong> $user_birthday</p><br>
+			<p><strong>Ubicación: </strong> $user_country</p><br>
+			<p><strong>Miembro Desde: </strong> $register_date</p><br>
+			<p><strong>Género: </strong> $user_gender</p><br>
+			<p><strong>Fecha de Nacimiento: </strong> $user_birthday</p><br>
 		";
 		?>
 	</div>
@@ -183,7 +171,17 @@ if(!isset($_SESSION['user_email'])){
 				$u_id = $_GET['u_id'];
 			}
 
-			$get_posts = "select * from posts where user_id= '$u_id' ORDER by 1 DESC LIMIT 5";
+			if (isset($_GET['page'])) {
+				$page = $_GET['page'];
+			}
+			else {
+				$page = 1;
+			}
+
+			$per_page = 5;
+			$start_from = ($page-1) * $per_page;
+
+			$get_posts = "select * from posts where user_id='$u_id' ORDER by post_date DESC LIMIT $start_from, $per_page";
 
 			$run_posts = mysqli_query($con, $get_posts);
 
@@ -223,7 +221,7 @@ if(!isset($_SESSION['user_email'])){
 							</div>
 						</div><br>
 						<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-success'>Comentarios</button></a>
-						<a href='functions/delete_post.php?post_id=$post_id' style='float:right;'><button class='btn btn-danger'>Borrar</button></a>
+						<button style='float: right;' onclick='confirmDeletion($post_id)' class='btn btn-danger'>Borrar</button>
 					</div><br><br>
 					";
 				}
@@ -249,7 +247,7 @@ if(!isset($_SESSION['user_email'])){
 							</div>
 						</div><br>
 						<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-success'>View Comments</button></a>
-						<a href='functions/delete_post.php?post_id=$post_id' style='float:right;'><button class='btn btn-danger'>Borrar</button></a>
+						<button style='float: right;' onclick='confirmDeletion($post_id)' class='btn btn-danger'>Borrar</button>
 					</div><br><br>
 					";
 				}
@@ -299,21 +297,25 @@ if(!isset($_SESSION['user_email'])){
 					$user_id = $row['user_id'];
 					$u_email = $row['user_email'];
 
-					if($u_email != $user_email){
+					if ($u_email != $user_email) {
 						echo "<script>window.open('profile.php?u_id=$user_id', '_self')</script>";
-					}else{
+					}
+					else {
 						echo "
 						<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-success'>Comentarios</button></a>
 						<a href='edit_post.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Editar</button></a>
-						<a href='functions/delete_post.php?post_id=$post_id' style='float:right;'><button class='btn btn-danger'>Borrar</button></a><br>
+						<button style='float: right;' onclick='confirmDeletion($post_id)' class='btn btn-danger'>Borrar</button>
 						</div><br><br><br>
 						";
 					}
 				}
 
 				include("functions/delete_post.php");
-
 			}
+		?>
+		<?php
+			include("functions/pagination.php");
+			profile_pagination($u_id);
 		?>
 	</div>
 	<div class='col-sm-2'>

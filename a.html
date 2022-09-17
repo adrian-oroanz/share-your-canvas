@@ -1,0 +1,20 @@
+<form action='' method='post'>
+	<div class='input-group'>
+		<span class='input-group-addon'><i class='glyphicon glyphicon-chevron-down'></i></span>
+		<select name='r_question' class='form-control input-md' required>
+			<option disabled value='0'>Selecciona una pregunta de seguridad</option>
+			<option value='1'>¿Cual es tu color favorito?</option>
+			<option value='2'>¿Cual fue el nombre de tu primera mascota?</option>
+			<option value='3'>¿Cual es tu comida favorita?</option>
+			<option value='4'>¿Cual fue tu apodo en la infancia?</option>
+			<option value='5'>¿En que ciudad naciste?</option>
+		</select>
+		<span class='input-group-addon'><i class='glyphicon glyphicon-pencil'></i></span>
+		<input type='text' class='form-control' name='r_answer' required placeholder='Escribe tu respuesta aqui...'>
+	</div><br><br>
+
+	<center>
+		<button style='float: left;' form='' class='btn' onclick='window.open(`home.php`, `_self`)'>Regresar</button>
+		<button style='float: right;' type='submit' class='btn btn-info'>Continuar</button>
+	</center><br>
+</form>

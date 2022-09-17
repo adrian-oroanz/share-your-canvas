@@ -39,6 +39,7 @@ input[type="file"]{
 	padding-right: 10px;
 	min-width: 102%;
 	max-width: 50%;
+	object-fit: contain;
 }
 #single_posts{
 	border: 5px solid #e6e6e6;

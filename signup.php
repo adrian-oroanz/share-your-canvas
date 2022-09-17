@@ -52,23 +52,23 @@
 				<form action="" method="post">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						<input type="text" class="form-control" placeholder="Nombre" name="first_name" required="required">
+						<input type="text" class="form-control" placeholder="Nombre" name="first_name" required>
 					</div><br>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						<input type="text" class="form-control" placeholder="Apellido" name="last_name" required="required">
+						<input type="text" class="form-control" placeholder="Apellido" name="last_name" required>
 					</div><br>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-						<input id="password" type="password" class="form-control" placeholder="Contraseña" name="u_pass" required="required">
+						<input id="password" type="password" min="8" class="form-control" placeholder="Contraseña" name="u_pass" required>
 					</div><br>
 					<div class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						<input id="email" type="email" class="form-control" placeholder="Correo Electronico" name="u_email" required="required">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+						<input id="email" type="email" class="form-control" placeholder="Correo Electronico" name="u_email" required />
 					</div><br>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-down"></i></span>
-						<select class="form-control" name="u_country" required="required">
+						<select class="form-control" name="u_country" required>
 							<option disabled>Elige tu pais</option>
 							<option>Mexico</option>
 							<option>Estados Unidos</option>
@@ -79,7 +79,7 @@
 					</div><br>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-down"></i></span>
-						<select class="form-control input-md" name="u_gender" required="required">
+						<select class="form-control input-md" name="u_gender" required>
 							<option disabled>Genero</option>
 							<option>Masculino</option>
 							<option>Femenino</option>
@@ -87,9 +87,22 @@
 					</div><br>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-						<input type="date" class="form-control input-md" placeholder="Email" name="u_birthday" required="required">
+						<input type="date" class="form-control input-md" placeholder="Fecha de Nacimiento" name="u_birthday" required>
 					</div><br>
-					<a style="text-decoration: none;float: right;color: #187FAB;" data-toggle="tooltip" title="Signin" href="signin.php">Already have an account?</a><br><br>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						<select name="u_question" required class="form-control input-md">
+							<option selected disabled value="0">Selecciona una pregunta de seguridad</option>
+							<option value="1">¿Cual es tu color favorito?</option>
+							<option value="2">¿Cual fue el nombre de tu primera mascota?</option>
+							<option value="3">¿Cual es tu comida favorita?</option>
+							<option value="4">¿Cual fue tu apodo en la infancia?</option>
+							<option value="5">¿En que ciudad naciste?</option>
+						</select>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+						<input type="text" name="u_recovery" placeholder="Escribe tu respuesta aqui..." class="form-control input-md" required>
+					</div><br>
+					<a style="text-decoration: none;float: right;color: #187FAB;" data-toggle="tooltip" title="Signin" href="signin.php">¿Ya tienes una cuenta? Inicie sesión</a><br><br>
 
 					<center><button id="signup" class="btn btn-info btn-lg" name="sign_up">Signup</button></center>
 					<?php include("insert_user.php"); ?>

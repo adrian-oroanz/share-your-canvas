@@ -42,14 +42,14 @@
 		text-decoration: none;
 		font-family: 'Overpass Mono', monospace;
 		letter-spacing: -1px;
-
+		z-index: 3;
 	}
 </style>
 <body>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="well">
-			<center><h1 style="color: white;">ShareYourCanvas</h1></center>
+			<center><h1 style="color: white;">Share Your Canvas</h1></center>
 		</div>
 	</div>
 </div>
@@ -58,15 +58,22 @@
 		<div class="main-content">
 			<div class="header">
 				<h3 style="text-align: center;"><strong>Iniciar Sesion</strong></h3>
+				<hr>
 			</div>
 			<div class="l-part">
 				<form action="" method="post">
-					<input type="email" name="email" placeholder="Email" required="required" class="form-control input-md"><br>
-					<div class="overlap-text">
-						<input type="password" name="pass" placeholder="Password" required="required" class="form-control input-md"><br>
-						<a style="text-decoration:none;float: right;color: #187FAB;" data-toggle="tooltip" title="Reset Password" href="forgot_password.php">Olvide Mi Contraseña</a>
-					</div>
-					<a style="text-decoration: none;float: right;color: #187FAB;" data-toggle="tooltip" title="Create Account!" href="signup.php">¿No tienes Cuenta?</a><br><br>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+						<input type="email" name="email" placeholder="Email" required="required" class="form-control input-md"><br>
+					</div><br>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+						<div class="overlap-text">
+							<input type="password" name="pass" placeholder="Password" required="required" class="form-control input-md"><br>
+							<a style="text-decoration:none;float: right;color: #187FAB;" data-toggle="tooltip" title="Restaurar Contraseña" href="forgot_password.php">Olvide Mi Contraseña</a>
+						</div>
+					</div><br>
+					<a style="text-decoration: none;float: right;color: #187FAB;" data-toggle="tooltip" title="Registrarse" href="signup.php">¿No tienes Cuenta?</a><br><br>
 
 					<center><button id="signin" class="btn btn-info btn-lg" name="login">Iniciar Sesion</button></center>
 					<?php include("login.php"); ?>

@@ -10,6 +10,8 @@ include("includes/connection.php");
 		$country = htmlentities(mysqli_real_escape_string($con,$_POST['u_country']));
 		$gender = htmlentities(mysqli_real_escape_string($con,$_POST['u_gender']));
 		$birthday = htmlentities(mysqli_real_escape_string($con,$_POST['u_birthday']));
+		$question = htmlentities(mysqli_real_escape_string($con,$_POST['u_question']));
+		$recovery = htmlentities(mysqli_real_escape_string($con,$_POST['u_recovery']));
 		$status = "verified";
 		$posts = "no";
 		$newgid = sprintf('%05d', rand(0, 999999));
@@ -18,8 +20,13 @@ include("includes/connection.php");
 		$check_username_query = "select user_name from users where user_email='$email'";
 		$run_username = mysqli_query($con,$check_username_query);
 
-		if(strlen($pass) <8 ){
-			echo"<script>alert('La Contraseña debe tener minimo 8 Caracteres')</script>";
+		if (strlen($pass) < 8) {
+			echo "<script>alert('La contraseña debe tener al menos 8 caracteres')</script>";
+			exit();
+		}
+
+		if($question == "0") {
+			echo"<script>alert('Por favor seleccione una pregunta de seguridad')</script>";
 			exit();
 		}
 
@@ -34,17 +41,14 @@ include("includes/connection.php");
 			exit();
 		}
 
-		$rand = rand(1, 3); //Random number between 1 and 3
+		$rand = rand(0, 4);
+		$profile_pic = "default_pfp_$rand.png"; // Se selecciona una imagen de perfil por defecto.
 
-			if($rand == 1)
-				$profile_pic = ".png";
-			else if($rand == 2)
-				$profile_pic = ".png";
-			else if($rand == 3)
-				$profile_pic = ".png";
+		$rand = rand(0, 4);
+		$cover_photo = "default_cover_$rand.jpg";
 
 		$insert = "insert into users (f_name,l_name,user_name,describe_user,Relationship,user_pass,user_email,user_country,user_gender,user_birthday,user_image,user_cover,user_reg_date,status,posts,recovery_account)
-		values('$first_name','$last_name','$username','Hola, me gusta el arte!','...','$pass','$email','$country','$gender','$birthday','$profile_pic','default_cover.jpg',NOW(),'$status','$posts','recuperarcontrasenia')";
+		values('$first_name','$last_name','$username','Hola, me gusta el arte!','...','$pass','$email','$country','$gender','$birthday','$profile_pic','$cover_photo',NOW(),'$status','$posts','$question:$recovery')";
 		
 		$query = mysqli_query($con, $insert);
 
