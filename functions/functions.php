@@ -70,23 +70,21 @@ function insertPost(){
 	}
 }
 
-function get_posts(){
+function get_posts () {
+
 	global $con;
+
 	$per_page = 4;
+	$page = 1;
 
-	if(isset($_GET['page'])){
+	if (isset($_GET['page']))
 		$page = $_GET['page'];
-	}else{
-		$page=1;
-	}
 
-	$start_from = ($page-1) * $per_page;
+	$start_from = ($page - 1) * $per_page;
 
-	$get_posts = "SELECT * FROM posts ORDER BY 1 DESC LIMIT $start_from, $per_page";
+	$result_posts = mysqli_query($con, "SELECT * FROM posts ORDER BY 1 DESC LIMIT $start_from, $per_page");
 
-	$run_posts = mysqli_query($con, $get_posts);
-
-	while($row_posts = mysqli_fetch_array($run_posts)){
+	while ($row_posts = mysqli_fetch_array($result_posts)) {
 
 		$post_id = $row_posts['post_id'];
 		$user_id = $row_posts['user_id'];
@@ -94,109 +92,52 @@ function get_posts(){
 		$upload_image = $row_posts['upload_image'];
 		$post_date = $row_posts['post_date'];
 
-		$user = "select *from users where user_id='$user_id' AND posts='yes'";
-		$run_user = mysqli_query($con,$user);
-		$row_user = mysqli_fetch_array($run_user);
+		$result_user = mysqli_query($con, "SELECT * FROM users WHERE user_id = $user_id AND posts = 'yes'");
+		$row_user = mysqli_fetch_array($result_user);
 
 		$user_name = $row_user['user_name'];
 		$user_image = $row_user['user_image'];
 
-		//now displaying posts from database
+		$image = "";
+		$text = strlen($content) >= 1 ? "<h3>$content</h3>" : "";
 
-		if($content=="No" && strlen($upload_image) >= 1){
-			echo"
-			<div class='row'>
-				<div class='col-sm-3'>
-				</div>
-				<div id='posts' class='col-sm-6'>
-					<div class='row'>
-						<div class='col-sm-2'>
-						<p><img src='users/$user_image' class='img-circle' width='100px' height='100px'></p>
-						</div>
-						<div class='col-sm-6'>
-							<h3><a style='text-decoration:none; cursor:pointer;color #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
-							<h4><small style='color:black;'>Actualizar en: <strong>$post_date</strong></small></h4>
-						</div>
-						<div class='col-sm-4'>
-						</div>
-					</div>
-					<div class='row'>
-						<div class='col-sm-12'>
-							<img id='posts-img' src='imagepost/$upload_image' style='height:350px;'>
-						</div>
-					</div><br>
-					<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comentar</button></a><br>
-				</div>
-				<div class='col-sm-3'>
-				</div>
-			</div><br><br>
-			";
+		if (strlen($upload_image) >= 1) {
+			$image = "<img id='posts-img' class='img-rounded' src='imagepost/$upload_image' />";
+			$text = strlen($content) >= 1 ? "<p>$content</p>" : "";
 		}
 
-		else if(strlen($content) >= 1 && strlen($upload_image) >= 1){
-			echo"
-			<div class='row'>
-				<div class='col-sm-3'>
-				</div>
-				<div id='posts' class='col-sm-6'>
-					<div class='row'>
-						<div class='col-sm-2'>
-						<p><img src='users/$user_image' class='img-circle' width='100px' height='100px'></p>
-						</div>
-						<div class='col-sm-6'>
-							<h3><a style='text-decoration:none; cursor:pointer;color #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
-							<h4><small style='color:black;'>Actualizado en:  <strong>$post_date</strong></small></h4>
-						</div>
-						<div class='col-sm-4'>
-						</div>
+		echo "
+		<div class='row'>
+			<div class='col-sm-3'></div>
+			<div id='posts' class='col-sm-6'>
+				<div class='row'>
+					<div class='col-sm-2'>
+						<p><img src='users/$user_image' class='img-circle' style='width: 100px; height: 100px;'></p>
 					</div>
-					<div class='row'>
-						<div class='col-sm-12'>
-							<p>$content</p>
-							<img id='posts-img' src='imagepost/$upload_image' style='height:350px;'>
-						</div>
-					</div><br>
-					<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comentar</button></a><br>
-				</div>
-				<div class='col-sm-3'>
-				</div>
-			</div><br><br>
-			";
-		}
-
-		else{
-			echo"
-			<div class='row'>
-				<div class='col-sm-3'>
-				</div>
-				<div id='posts' class='col-sm-6'>
-					<div class='row'>
-						<div class='col-sm-2'>
-						<p><img src='users/$user_image' class='img-circle' width='100px' height='100px'></p>
-						</div>
-						<div class='col-sm-6'>
-							<h3><a style='text-decoration:none; cursor:pointer;color #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
-							<h4><small style='color:black;'>Actualizado en <strong>$post_date</strong></small></h4>
-						</div>
-						<div class='col-sm-4'>
-						</div>
+					<div class='col-sm-6'>
+						<h3><a style='text-decoration:none; cursor:pointer; color:#3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
+						<h4><small style='color:black;'>Actualizado en <strong>$post_date</strong></small></h4>
 					</div>
-					<div class='row'>
-						<div class='col-sm-12'>
-							<h3><p>$content</p></h3>
-						</div>
-					</div><br>
-					<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comentar</button></a><br>
+					<div class='col-sm-4'></div>
 				</div>
-				<div class='col-sm-3'>
+				<hr />
+				<div class='row'>
+					<div class='col-sm-12'>
+						$text
+						$image
+					</div>
 				</div>
-			</div><br><br>
-			";
-		}
+				<br />
+				<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comentarios</button></a>
+			</div>
+			<div class='col-sm-3'></div>
+		</div>
+		<br />
+		";
 	}
 
 	include("pagination.php");
-	home_pagination();
+	paginate("SELECT * FROM posts", $page, $per_page);
 }
 
 function single_post(){
@@ -376,7 +317,7 @@ function single_post(){
 	}
 }
 
-function get_members() {
+function get_members () {
 	global $con;
 
 	$per_page = 5;
@@ -419,7 +360,74 @@ function get_members() {
 	}
 
 	include("pagination.php");
-	members_pagination();
+	paginate("SELECT * FROM users WHERE posts = 'yes'", $current_page, $per_page);
+}
+
+function get_user_posts ($userId, $page = 1) {
+
+	global $con;
+	global $user_id;
+
+	$per_page = 5;
+	$start_from = ($page - 1) * $per_page;
+
+	$result_post = mysqli_query($con, "SELECT * FROM posts WHERE user_id = $userId ORDER BY post_date DESC LIMIT $start_from, $per_page");
+
+	while ($row_post = mysqli_fetch_array($result_post)) {
+		$p_id = $row_post["post_id"];
+		$p_content = $row_post["post_content"];
+		$p_image = $row_post["upload_image"];
+		$p_date = $row_post["post_date"];
+
+		$result_user = mysqli_query($con, "SELECT * FROM users WHERE user_id = $userId AND posts = 'yes'");
+		$row_user = mysqli_fetch_array($result_user);
+
+		$u_name = $row_user["user_name"];
+		$u_image = $row_user["user_image"];
+
+		$image = "";
+		$content = strlen($p_content) >= 1 ? "<h3>$p_content</h3>" : "";
+
+		if (strlen($p_image) >= 1) {
+			$image = "<img class='img-rounded' src='imagepost/$p_image' style='width: 100%; object-fit: cover;' />";
+			$content = strlen($p_content) >= 1 ? "<p>$p_content</p>" : "";
+		}
+
+		$del_btn = "";
+
+		if ($userId === $user_id) {
+			$del_btn = "<a onclick='const x = confirm(\"¿Seguro que deseas borrar este post?\\nEsta acción es irreversible, ¡piensalo bien!\"); if (x) location.assign(\"/functions/delete_post.php?post_id=$p_id\")' class='btn btn-danger'>Borrar</a>";
+		}
+
+		echo "
+		<div style='border: 5px solid #e6e6e6; padding: 40px 50px;'>
+			<div class='row'>
+				<div class='col-sm-2'>
+					<p><img src='users/$u_image' class='img-circle' style='width: 100px; height: 100px;'></p>
+				</div>
+				<div class='col-sm-6'>
+					<h3><a style='text-decoration:none; cursor:pointer; color:#3897f0;' href='user_profile.php?u_id=$userId'>$u_name</a></h3>
+					<h4><small style='color:black;'>Actualizado en <strong>$p_date</strong></small></h4>
+				</div>
+				<div class='col-sm-4'>
+				</div>
+			</div>
+			<hr />
+			<div class='row'>
+				<div class='col-sm-12'>
+					$content
+					$image
+				</div>
+			</div>
+			<br />
+			<a href='single.php?post_id=$p_id' style='float:right;'><button class='btn btn-info'>Comentarios</button></a>
+			$del_btn
+			<br />
+		</div>
+		<br />
+		";
+	}
+
 }
 
 ?>

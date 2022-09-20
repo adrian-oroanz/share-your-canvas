@@ -9,8 +9,8 @@
         $run_delete = mysqli_query($con, $delete_post);
 
         if ($run_delete) {
-            echo"<script>alert('Se a Eliminado con exito!')</script>";
-            echo"<script>window.open('../home.php', '_self')</script>";
+            echo"<script>alert('¡Se ha eliminado exitósamente!')</script>";
+            echo"<script>window.history.back()</script>";
         }
     }
 

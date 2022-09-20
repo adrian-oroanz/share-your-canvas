@@ -1,20 +1,25 @@
-<form action='' method='post'>
-	<div class='input-group'>
-		<span class='input-group-addon'><i class='glyphicon glyphicon-chevron-down'></i></span>
-		<select name='r_question' class='form-control input-md' required>
-			<option disabled value='0'>Selecciona una pregunta de seguridad</option>
-			<option value='1'>¿Cual es tu color favorito?</option>
-			<option value='2'>¿Cual fue el nombre de tu primera mascota?</option>
-			<option value='3'>¿Cual es tu comida favorita?</option>
-			<option value='4'>¿Cual fue tu apodo en la infancia?</option>
-			<option value='5'>¿En que ciudad naciste?</option>
-		</select>
-		<span class='input-group-addon'><i class='glyphicon glyphicon-pencil'></i></span>
-		<input type='text' class='form-control' name='r_answer' required placeholder='Escribe tu respuesta aqui...'>
-	</div><br><br>
-
-	<center>
-		<button style='float: left;' form='' class='btn' onclick='window.open(`home.php`, `_self`)'>Regresar</button>
-		<button style='float: right;' type='submit' class='btn btn-info'>Continuar</button>
-	</center><br>
-</form>
+<div class='row'>
+	<div class='col-sm-3'>
+	</div>
+	<div id='posts' class='col-sm-6'>
+		<div class='row'>
+			<div class='col-sm-2'>
+			<p><img src='users/$user_image' class='img-circle' width='100px' height='100px' style='border: 2px solid black;'></p>
+			</div>
+			<div class='col-sm-6'>
+				<h3><a style='text-decoration:none; cursor:pointer;color #3897f0;' href='user_profile.php?u_id=$user_id'>$user_name</a></h3>
+				<h4><small style='color:black;'>Actualizar en: <strong>$post_date</strong></small></h4>
+			</div>
+			<div class='col-sm-4'>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-sm-12'>
+				<img id='posts-img' src='imagepost/$upload_image' style='height:350px;'>
+			</div>
+		</div><br>
+		<a href='single.php?post_id=$post_id' style='float:right;'><button class='btn btn-info'>Comentar</button></a><br>
+	</div>
+	<div class='col-sm-3'>
+	</div>
+</div><br><br>

@@ -13,7 +13,8 @@
 <body>
 	<div class="row">
 		<div class="col-sm-12">
-			<center><h2>Comentarios</h2><br></center>
+			<center><h2><strong>Comentarios</strong></h2><br></center>
+			<hr />
 			<?php single_post(); ?>
 		</div>
 	</div>

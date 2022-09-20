@@ -34,11 +34,8 @@ input[type="file"]{
 	border: 5px solid #e6e6e6;
 	padding: 40px 50px;
 }
-#posts-img{
-	padding-top: 5px;
-	padding-right: 10px;
-	min-width: 102%;
-	max-width: 50%;
+#posts-img {
+	width: 100%;
 	object-fit: contain;
 }
 #single_posts{

@@ -41,10 +41,10 @@ include("includes/connection.php");
 			exit();
 		}
 
-		$rand = rand(0, 4);
+		$rand = rand(1, 3);
 		$profile_pic = "default_pfp_$rand.png"; // Se selecciona una imagen de perfil por defecto.
 
-		$rand = rand(0, 4);
+		$rand = rand(1, 3);
 		$cover_photo = "default_cover_$rand.jpg";
 
 		$insert = "insert into users (f_name,l_name,user_name,describe_user,Relationship,user_pass,user_email,user_country,user_gender,user_birthday,user_image,user_cover,user_reg_date,status,posts,recovery_account)

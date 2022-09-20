@@ -10,7 +10,7 @@
 
 		$user_name = $row['user_name'];
 	?>
-	<title>ShareYourCanvas • <?php echo "$user_name"; ?></title>
+	<title>Inicio • ShareYourCanvas</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
