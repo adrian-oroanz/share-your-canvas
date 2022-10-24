@@ -1,0 +1,22 @@
+body {
+	overflow-x: hidden;
+}
+
+.cover {
+	object-fit: cover;
+	max-height: 480px;
+}
+
+.avatar {
+	object-fit: cover;
+	filter: drop-shadow(2px 2px 10px black);
+	height: 96px;
+	width: 96px;
+}
+
+@media screen and (min-width: 768px) {
+	.avatar {
+		height: 196px;
+		width: 196px;
+	}
+}

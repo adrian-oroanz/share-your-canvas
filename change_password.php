@@ -1,134 +1,111 @@
+<?php include "include/auth.php"; global $user; ?>
 <!DOCTYPE html>
-<?php include("includes/header.php"); ?>
-<html>
+<html lang="es">
 <head>
+	<?php
+		if (!isset($_SESSION["verified"]) || $_SESSION["verified"] != "true") {
+			echo "<script>window.location.assign('/verify.php')</script>";
+			exit();
+		}
+	?>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<!-- CSS only -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+	<!-- Bootstrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+	<!-- JavaScript Bundle with Popper -->
+	<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+
 	<title>Cambiar Contraseña • ShareYourCanvas</title>
 </head>
 <style>
-	body{
+	body {
 		overflow-x: hidden;
-	}
-	.main-content{
-		width: 50%;
-		height: 40%;
-		margin: 10px auto;
-		background-color: #fff;
-		border: 2px solid #e6e6e6;
-		padding: 40px 50px;
-	}
-	.header{
-		border: 0px solid #000;
-		margin-bottom: 5px;
-	}
-	.well{
-		background-color: #000;
 	}
 </style>
 <body>
-<div class="row">
-	<div class="col-sm-12">
-		<div class="main-content">
-			<div class="header">
-				<h3 style="text-align: center;"><strong>Cambiar Contraseña</strong></h3>
+	<?php include "components/navbar.php"; ?>
+	<div class="row">
+		<div class="col-sm-3"></div>
+
+		<div class="col-sm-6">
+			<div class="text-center mb-5">
+				<h1><b>Cambiar Contraseña</b></h1>
 				<hr>
 			</div>
-			<div class="l-part">
-				<center><p><?php echo "⚠ La contraseña asociada al correo <b>".$user_email."</b> se cambiara ⚠" ?></p></center><br>
+			<div class="row">
+				<div class="col-sm-2"></div>
+				
+				<div class="col-sm-8">
+					<h5 class="text-center">La contraseña asociada al correo <b><?php echo $user["email"]; ?></b> se cambiará</h5>
+					<br />
+					<br />
+					<form id="password-form" method="post">
+						<div class="mb-3">
+							<label for="password-new" class="form-label">Nueva Contraseña</label>
+							<input type="password" name="password" id="password-new" minlength="8" class="form-control" required aria-describedby="password-new-help" />
+							<div class="form-text">
+								La contraseña debe contener mínimo 8 caracteres y no puede ser la misma a la anterior.
+							</div>
+						</div>
+						<div class="mb-3">
+							<label for="password-confirm" class="form-label">Confirmar Contraseña</label>
+							<input type="password" name="confirm" id="password-confirm" class="form-control" required aria-describedby="password-confirm-help" />
+							<div class="form-text">
+								Vuelve a introducir tu nueva contraseña.
+							</div>
+						</div>
+						<center><button class="btn btn-primary btn-lg mt-3 w-75">Continuar</button></center>
+					</form>
+				</div>
 
-				<?php
-					if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-						if (!isset($_GET['r_question']) || !isset($_GET['r_answer'])) {
-							echo "
-							<form action='' method='get'>
-								<div class='input-group'>
-									<span class='input-group-addon'><i class='glyphicon glyphicon-chevron-down'></i></span>
-									<select name='r_question' class='form-control input-md' required>
-										<option disabled value='0'>Selecciona una pregunta de seguridad</option>
-										<option value='1'>¿Cual es tu color favorito?</option>
-										<option value='2'>¿Cual fue el nombre de tu primera mascota?</option>
-										<option value='3'>¿Cual es tu comida favorita?</option>
-										<option value='4'>¿Cual fue tu apodo en la infancia?</option>
-										<option value='5'>¿En que ciudad naciste?</option>
-									</select>
-									<span class='input-group-addon'><i class='glyphicon glyphicon-pencil'></i></span>
-									<input type='text' class='form-control' name='r_answer' required placeholder='Escribe tu respuesta aqui...'>
-								</div><br><br>
-
-								<center>
-									<button style='float: left;' form='' class='btn' onclick='window.open(`home.php`, `_self`)'>Regresar</button>
-									<button style='float: right;' type='submit' class='btn btn-info'>Continuar</button>
-								</center><br>
-							</form>
-							";
-							exit();
-						}
-
-						$r_question = $_GET['r_question'];
-						$r_answer = $_GET['r_answer'];
-						
-						$exploded = explode(':', $recovery_account, 2);
-
-						if ($exploded[0] !== $r_question || $exploded[1] !== $r_answer) {
-							echo "<script>alert('La pregunta seleccionada o respuesta no coinciden')</script>";
-							echo "<script>window.open('change_password.php', '_self')</script>";
-							exit();
-						}
-					}
-				?>
-
-				<form action="" method="post">
-					<div class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-						<input type="password" class="form-control" name="r_password" placeholder="Nueva Contraseña" required>
-					</div><br>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-						<input type="password" name="r_password_confirm" class="form-control" placeholder="Confirmar Contraseña" required>
-					</div><br><br>
-
-					<center>
-						<button form="" style="float: left;" onclick="location.replace('home.php')" class="btn">Cancelar</button>
-						<button type="submit" style="float: right;" class="btn btn-info">Continuar</button>
-					</center><br>
-				</form>
-				<?php
-					if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-						$r_password = $_POST['r_password'];
-						$r_password_confirm = $_POST['r_password_confirm'];
-
-						if ($r_password === $r_password_confirm) {
-							$query = "SELECT user_pass FROM users WHERE user_email='$user_email'";
-							$result = mysqli_query($con, $query);
-							$row = mysqli_fetch_array($result);
-
-							if ($row['user_pass'] === $r_password) {
-								echo "<script>alert('La contraseña no puede ser la misma a la anterior. Utiliza otra contraseña')</script>";
-								exit();
-							}
-
-							$query = "UPDATE users SET user_pass='$r_password' WHERE user_email='$user_email'";
-							$result = mysqli_query($con, $query);
-
-							if ($result) {
-								unset($_SESSION['user_email']);
-								echo "<script>alert('Contraseña cambiada con exito. Vuelve a iniciar sesión para continuar')</script>";
-								echo "<script>window.open('signin.php', '_self')</script>";
-							} else {
-								echo "<script>alert('Error al cambiar contraseña')</script>";
-							}
-						} else {
-							echo "<script>alert('Las contraseñas no coinciden')</script>";
-						}
-					}
-				?>
+				<div class="col-sm-2"></div>
 			</div>
 		</div>
+
+		<div class="col-sm-3"></div>
 	</div>
-</div>
+
+	<?php include "components/preferences.php"; ?>
 </body>
 </html>
+<?php
+if ($_SERVER["REQUEST_METHOD"] != "POST") exit();
+
+global $db;
+
+$password = htmlentities(mysqli_real_escape_string($db->conn, $_POST["password"]));
+$confirm = htmlentities(mysqli_real_escape_string($db->conn, $_POST["confirm"]));
+
+if (strlen($password) < 8) {
+	echo "<script>alert('La contraseña debe tener una longitud mayor a 8 caracteres')</script>";
+	exit();	
+}
+
+if ($password != $confirm) {
+	echo "<script>alert('Las contraseñas no coinciden')</script>";
+	exit();
+}
+
+if (hash("sha256", $password) == $user["password"]) {
+	echo "<script>alert('La nueva contraseña no puede ser la misma a la anterior')</script>";
+	exit();
+}
+
+$stmt = DB\update("users", [ "password" => hash("sha256", $password) ], [ DB\where("id", "=", $user["id"]) ]);
+$result = $db->exec($stmt);
+
+if ($result) {
+	session_unset();
+	echo "<script>alert('Se ha cambiado tu contraseña exitosamente\\nVuelve a iniciar sesión para continuar')</script>";
+	echo "<script>window.location.assign('/login.php')</script>";
+	exit();
+}
+
+echo "<script>alert('Ocurrió un error al cambiar tu contraseña, inténtalo otra vez')</script>";
+?>
